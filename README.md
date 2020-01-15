@@ -6,7 +6,9 @@ Server lang：php7.2
 Server Framework: Slim3  
 Front App: Polrymer 2.0
 
-## 準備
+## 開発環境の仕様について
+
+### 準備
 
 下記コマンドを使用できるようにしておく
 
@@ -15,31 +17,36 @@ Front App: Polrymer 2.0
 * bower
 * yarn
 
-## 開発環境起動
+### 起動
 
-docker で起動した port 8000 で開発を行う  
-※ link タグの import 機能を polymer2.0 では用いる為、Chromeで確認する
+下記のコマンドを打ち、http://localhost:8000/messe/login へアクセス  
+※ link タグの import 機能を polymer2.0 では用いる為、Chrome で確認する
 
-### プロジェクト clone 後最初の１回目
+#### プロジェクト clone 後の初回の起動コマンド
 
 ```bash
-# 1.Start the PHP dev environment. You can connect with port 8000
+# 1.Grant permission to apply my.cnf settings to mysql
+chmod 644 ./db/my.cnf
+# 2.Start the PHP dev environment. You can connect with port 8000
 docker-compose up -d --build
-# 2.Bower_components install
-cd src/app/views/messe
+# 3.Create a vendor dir, install slim3 and dependency modules there
+cd src/
+composer install
+# 4.Create a bower_components dir and install polymer components there
+cd app/views/messe/
 bower install
-# 3.Polymer-CLI install
+# 5.Create a node_modules dir and install polymer cli there
 yarn
 ```
 
-### 以降のプロジェクト起動
+#### 以降のプロジェクト起動コマンド
 
 ```bash
 # 1.Start the PHP dev environment. You can connect with port 8000
 docker-compose up -d
 ```
 
-## アプリケーションビルド
+### アプリケーションビルド
 
 ビルド前に src/app/views/messe/app.php に下記の変更を加える
 その後ビルドコマンドを打つ
@@ -51,4 +58,21 @@ docker-compose up -d
 ```bash
 # Build setting by polymer.json
 polymer build
+```
+
+## 開発について
+
+### Google ログイン
+
+./src/conf/settings.php の `CONSUMER_KEY`, `CONSUMER_SECRET` に任意の値を設定する
+
+```php
+# ./src/conf/settings.php
+...
+'messe' => [
+    'CONSUMER_KEY' => 'xxxxxxxxxxxxxxxxxxx',
+    'CONSUMER_SECRET' => 'xxxxxxxxxxxxxxxxxxxx',
+    ...
+]
+...
 ```
