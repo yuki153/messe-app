@@ -100,7 +100,7 @@ class MesseController {
             );
             $link = $this->auth_url . '?' . http_build_query($params);
         } else {
-            $link = 'http://localhost:8888/180328_polymer-chat/app.php';
+            $link = 'http://localhost:8000/messe';
         }
         $viewData = [
             'slim' => [
@@ -125,14 +125,19 @@ class MesseController {
     public function observeLog (Request $request, Response $response) {
         header("Content-Type: text/event-stream");
         header("Cache-Control: no-cache");
-        // while(true) {
-        //     sleep(10);
-        //     echo "data: 'test'\n\n";
-        //     ob_end_flush();
-        //     flush();
-        //     session_write_close();
-        // }
-        // $renderer = new PhpRenderer('../app/views/messe');
-        // return $renderer->render($response, "event.php", null);
+        session_write_close();
+        $messe_model = new MesseModel($this->container);
+        $count = $messe_model->countLog();
+        while(true) {
+            sleep(3);
+            $updated_count = $messe_model->countLog();
+            if ($count < $updated_count) {
+                $json = $messe_model->ajaxLog();
+                $count = $updated_count;
+                echo "data:" . $json . "\n\n";
+                ob_end_flush();
+                flush();
+            }
+        }
     }
 }
