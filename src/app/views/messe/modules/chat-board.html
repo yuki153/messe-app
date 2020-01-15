@@ -117,6 +117,16 @@
                 border-bottom-color: #f8688a;
             }
 
+            log-item .thumbnail {
+                display: block;
+                height: 100%;
+                background-color: #163a75;
+            }
+
+            log-item.self .thumbnail {
+                background-color: #f8688a;
+            }
+
             log-item:first-child {
                 margin-top: 0;
             }
@@ -211,8 +221,6 @@
                     _this.writeClass = 'write'
               }
           })
-
-          // setInterval(function(){_this.$.xxx.generateRequest()} , 5000);
       }
 
 
@@ -232,21 +240,21 @@
         this.poly_clickFrag = 0;
         this.$.xxx.generateRequest();
         const evtSource = new EventSource("http://localhost:8000/messe/observe/log");
-        evtSource.onmessage = function(e) {
+        evtSource.onmessage = (e) => {
             console.log(e.data);
+            this.$.xxx.generateRequest();
         }
       }
         
       statusResponse (e) {
           const responseData = e.detail.xhr.response;
           const userData = JSON.parse(this.userData);
-          const defaultThumbnail = 'http://localhost:8000/images/ico-thumbnail.png';
-          const thumbnail = localStorage.getItem('thumbnail') || defaultThumbnail; 
+          const defaultThumbnail = 'http://localhost:8000/images/ico_user_thumbnail.png';
           let textLogItem = "";
           for (this.poly_i; this.poly_i < responseData.length; this.poly_i++ ) {
               if (userData.id === responseData[this.poly_i].user_id) {
                 textLogItem = `<log-item class="self">
-                               <span slot="thumbnail"><img src=${thumbnail} width="100%" height="auto"></span>
+                               <span slot="thumbnail" class="thumbnail"><img src=${defaultThumbnail} width="100%" height="auto"></span>
                                <span slot="chatText">${responseData[this.poly_i].text}</span>
                                <span slot="userName" class="useName">${responseData[this.poly_i].user_name}</span>
                                <span slot="datetime" class="datetime">${responseData[this.poly_i].time}</span>
