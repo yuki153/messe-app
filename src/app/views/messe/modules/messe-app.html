@@ -1,0 +1,102 @@
+<!-- <link rel="import" href="../../bower_components/polymer/polymer-element.html"> -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html"> 
+<link rel="import" href="chat-board.html">
+<link rel="import" href="menu-button.html">
+<link rel="import" href="menu-box.html">
+
+<dom-module id="messe-app">
+    <template>
+        <style>
+            :host {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
+            header {
+                position: fixed;
+                width: 100%;
+                height: 50px;
+                top: 0;
+                left: 0;
+                font-size: 0;
+                z-index: 400;
+                background: linear-gradient(45deg, rgba(83,109,254,1) 0%, rgba(255,64,129,1) 100%);
+            }
+            img {
+                /* alt font-size */
+                position: absolute;
+                top: 50%;
+                left: 14px;
+                transform: translate(0, -50%);
+                font-size: 14px !important;
+            }
+            menu-button {
+                position: absolute;
+                transform: translateY(-50%);
+                top: 50%;
+                right: 14px;
+                width: 30px;
+                height: 24px;
+                z-index: 10;
+            }
+            menu-box {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                padding-top: 70px;
+                background-color: rgba(0, 0 ,0 ,.8);
+                z-index: 10;
+            }
+        </style>
+
+        <header class$=[[headerClass]]>
+            <menu-button status={{mediator_menuStatus}}></menu-button>
+            <img src="http://localhost:8000/images/messe_logo_wh.svg"
+                 alt="messe"
+                 width="100"
+                 height="auto"
+            >
+        </header>
+        <menu-box status=[[mediator_menuStatus]] style="display:none"></menu-box>
+        <chat-board status=[[mediator_menuStatus]] user-data=[[userData]]></chat-board>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class MesseApp extends Polymer.Element {
+        static get is() { return 'messe-app'; }
+        static get properties() {
+            return {
+                userData: {
+                    type: String,
+                },
+                mediator_menuStatus: {
+                    type: Boolean,
+                    observer: 'obs_changeClass',
+                },
+                headerClass: {
+                    type: String,
+                    value: '',
+                }
+            };
+        }
+        ready() {
+            super.ready();
+        }
+        obs_changeClass (mediator_menuStatus) {
+            if (mediator_menuStatus === true) {
+                this.headerClass = 'is-close';
+            } else {
+                this.headerClass = '';
+            }
+        }
+    }
+
+    window.customElements.define(MesseApp.is, MesseApp);
+    </script>
+</dom-module>

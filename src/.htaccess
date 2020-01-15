@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+   # RewriteRule ^$ public/ [L]
+   # RewriteRule (^[^/]*$) public/$1 [L]
+
+   RewriteEngine On
+
+   RewriteBase /
+
+   # TODO: Want to change resource url that app is loading
+   RewriteCond %{REQUEST_URI} ^/messe/.*(\.html|\.json|\.js)
+   # memo: "messe/modules/(.*)$" = $1（置換対象部分(.*)$）
+   RewriteRule messe/(.*)$ app/views/messe/$1 [QSA,L]
+
+   RewriteCond %{REQUEST_FILENAME} !-f
+   # RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteRule ^ public/index.php [QSA,L]
+</IfModule>

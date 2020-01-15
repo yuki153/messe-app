@@ -1,0 +1,92 @@
+<!-- <link rel="import" href="../../bower_components/polymer/polymer-element.html"> -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="log-item">
+    <template>
+        <style>
+            :host{
+                display: block;
+                width: 94%;
+                height: auto;
+                font-size: 0;
+                border-bottom: 1px solid #fff;
+                color: #fff;
+                font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Helvetica', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'メイリオ', Meiryo, sans-serif;
+            }
+            .mainInformation {
+                display: flex;
+                width: 100%;
+            }
+
+            .thumbnailImg {
+                display: block;
+                width: 38px;
+                height: 38px;
+                margin-right: 8px;
+                border-radius: 50%;
+                overflow: hidden;
+            }
+            .chatText {
+                display: block;
+                width: calc(100% - 46px);
+                height: auto;
+                min-height: 36px;
+                padding: 4px;
+                line-height: 1.6;
+                font-size: 14px;
+                border-radius: 6px;
+                background-color: rgba(0, 0, 0, .3);
+                box-sizing: border-box;
+            }
+            .accompanyingInformation {
+                display: block;
+                text-align: right;
+                font-size: 12px;
+                margin: 4px 0 2px;
+            }
+            .accompanyingInformation ::slotted([slot="datetime"]) {
+                /* slotで差し込んだ要素は外部の styleに影響を受ける */
+                font-size: 10px !important;
+                margin-right: 4px !important;
+            }
+        </style>
+        <div class="componentWrap">
+            <div class="mainInformation">
+                <span class="thumbnailImg">
+                    <slot name="thumbnail"></slot>
+                </span>
+                <span class="chatText">
+                    <slot name="chatText"></slot>
+                </span>
+            </div>
+            <span class="accompanyingInformation">
+                <slot name="datetime"></slot><slot name="userName"></slot>
+            </span>
+        </div>
+    </template>
+
+    <script>
+        class LogItem extends Polymer.Element {
+            static get is(){
+                return 'log-item';
+            }
+            static get properties() {
+                return {
+                poly_textData: String,
+                poly_i: Number,
+                poly_clickFlag: Number,
+                poly_startFlaf: Number,
+                userData: {
+                    type: String,
+                },
+                };
+            }
+            ready(){
+                super.ready();
+            }
+            // connectedCallback() {
+            // }
+        }
+        window.customElements.define(LogItem.is, LogItem);
+    </script>
+</dom-module>

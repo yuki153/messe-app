@@ -1,0 +1,12 @@
+{
+  "lint": {
+    "rules": ["polymer-2"]
+  },
+  "entrypoint": "app.html",
+  "builds": [{
+    "bundle": true,
+    "js": {"compile": true, "minify": true},
+    "css": {"minify": true},
+    "html": {"minify": false}
+  }]
+}

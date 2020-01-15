@@ -1,0 +1,9 @@
+{
+  "name": "messe",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "polymer-cli": "^1.5.7"
+  }
+}

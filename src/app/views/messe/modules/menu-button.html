@@ -1,0 +1,121 @@
+<!-- <link rel="import" href="../../bower_components/polymer/polymer-element.html"> -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="menu-button">
+    <template>
+        <style>
+            :host {
+                position: relative;
+                display: block;
+            }
+            .stick01,
+            .stick02,
+            .stick03 {
+                position: absolute;
+                width: 100%;
+                height: 4px;
+                background-color: #fff;
+                transition: .2s;
+            }
+
+            .stick01 {
+                top: 0;
+            }
+
+            .stick02 {
+                transform: translateY(-50%);
+                top: 50%;
+            }
+
+            .stick03 {
+                bottom: 0; 
+            }
+
+            .stick01.is-close {
+                transform: translateY(-50%);
+                top: 50%;
+                animation: menu-close01 .3s ease .2s forwards;
+            }
+
+            .stick02.is-close {
+                display: none;
+            }
+
+            .stick03.is-close {
+                transform: translateY(50%);
+                bottom: 50%; 
+                animation: menu-close03 .3s ease .2s forwards;
+            }
+
+            @keyframes menu-close01 {
+                0% {
+                    transform: translateY(-50%) rotate(0deg);
+                }
+                100% {
+                    transform: translateY(-50%) rotate(-45deg);
+                }
+            }
+
+            @keyframes menu-close03 {
+                0% {
+                    transform: translateY(50%) rotate(0deg);
+                }
+                100% {
+                    transform: translateY(50%) rotate(45deg);
+                }
+            }
+        </style>
+        <div class$="[[stick01]]" id="js-stick01"></div>
+        <div class$="[[stick02]]" id="js-stick02"></div>
+        <div class$="[[stick03]]" id="js-stick03"></div>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class MenuButton extends Polymer.Element {
+        static get is() { return 'menu-button'; }
+        static get properties() {
+            return {
+                stick01: {
+                    type: String,
+                    value: 'stick01'
+                },
+                stick02: {
+                    type: String,
+                    value: 'stick02'
+                },
+                stick03: {
+                    type: String,
+                    value: 'stick03'
+          　    },
+                status: {
+                    type: Boolean,
+                    value: false,
+                    notify: true,
+                },
+            };
+        }
+        ready() {
+            super.ready();
+            this.addEventListener('touchstart', function (){
+                if (this.status === true) {
+                    this.stick01 = "stick01 is-open"
+                    this.stick02 = "stick02 is-open"
+                    this.stick03 = "stick03 is-open"
+                    this.status = false;
+                } else {
+                    this.stick01 = "stick01 is-close"
+                    this.stick02 = "stick02 is-close"
+                    this.stick03 = "stick03 is-close"
+                    this.status = true;
+                }
+            })
+        }
+    }
+
+    window.customElements.define(MenuButton.is, MenuButton);
+    </script>
+</dom-module>

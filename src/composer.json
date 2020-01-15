@@ -1,0 +1,12 @@
+{
+    "require": {
+        "slim/slim": "3.12.3",
+        "slim/php-view": "^2.2",
+        "monolog/monolog": "^1.25"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    }
+}

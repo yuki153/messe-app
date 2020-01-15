@@ -1,0 +1,291 @@
+<!-- <link rel="import" href="../../bower_components/polymer/polymer-element.html"> -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<!-- <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html"> -->
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="log-list.html">
+<link rel="import" href="log-item.html">
+
+<dom-module id="chat-board">
+    <template>
+        <style>
+            :host {
+                display: block;
+                font-size: 14px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Helvetica', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'メイリオ', Meiryo, sans-serif;
+            }
+            *:focus {
+                outline-style: none;
+            }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            button {
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                outline: none;
+                padding: 0;
+                appearance: none;
+            }
+            .formArea {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                padding: 70px 20px;
+                background-color: rgba(255, 255, 255, 0.7);
+                transition: .3s;
+                opacity: 0;
+                z-index: 500;
+            }
+
+            .textArea {
+                display: block;
+                width: 100%;
+                font-size: 16px;
+                line-height: 1.6;
+                height: 5em; /* 3行 */
+                border-radius: 6px;
+                border: 0;
+                padding: 4px;
+            }
+
+
+            .formButton.-send {
+                display: block;
+                margin: 16px auto 0;
+                width: 200px;
+                height: 50px;
+                background-color: #f8688a;
+                border-radius: 25px;
+                color: #fff;
+                box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .4);
+            }
+
+            .formButton.-delete {
+                /* debug buttton */
+                position: absolute;
+                left: 10px;
+                color: #fff;
+                border: 1px solid #fff;
+                border-radius: 2px;
+            }
+
+            .write {
+                position: fixed;
+                display: flex;
+                justify-content: center; /* 子要素をflexboxにより中央に配置する */
+                align-items: center;  /* 子要素をflexboxにより中央に配置する */
+                bottom: 20px;
+                right: 20px;
+                width: 46px;
+                height: 46px;
+                background-color: #f8688a;
+                border-radius: 50%;
+                box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .4);
+                z-index: 600;
+            }
+
+            .write.is-close img {
+                display: none;
+            }
+
+            .write.is-close::before,
+            .write.is-close::after {
+                position: absolute;
+                content:'';
+                transform: translate(-50%,-50%) rotate(45deg);
+                top: 50%;
+                left: 50%;
+                width: 30px;
+                height: 4px;
+                background-color: #fff;
+            }
+            .write.is-close::after {
+                transform: translate(-50%,-50%) rotate(-45deg);
+            }
+
+
+            log-item {
+                margin: 20px auto 0;
+            }
+
+            log-item.self {
+                border-bottom-color: #f8688a;
+            }
+
+            log-item:first-child {
+                margin-top: 0;
+            }
+
+        </style>
+        <log-list id="logList"></log-list>
+        <div id="formAreaWrap" class="formAreaWrap">
+            <form id="formArea"
+                  class="formArea"
+                  style="display: none"
+            >
+                <textarea class="textArea" type="text" placeholder="メッセージを入力">text</textarea>
+                <button id="sendButton"
+                        class="formButton -send"
+                        type="button">
+                        メッセージを送信
+                </button>
+            </form>
+            <div id="write" class$="[[writeClass]]">
+                <img src="http://localhost:8000/images/ico_Message_min_3x.png"
+                     alt="メッセージ追加"
+                     width="32"
+                     height="auto"
+                >
+            </div>
+        </div>
+        
+        <iron-ajax
+        id="xxx"
+        content-type="application/json"
+        body=[[poly_textData]]
+        url="http://localhost:8000/messe/ajax/log"
+        method="POST"
+        handle-as="json"
+        on-response="statusResponse"
+        >
+        </iron-ajax>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class ChatBoard extends Polymer.Element {
+      static get is() { return 'chat-board'; }
+      static get properties() {
+        return {
+          poly_textData: String,
+          poly_i: Number,
+          poly_clickFlag: Number,
+          poly_startFlaf: Number,
+          userData: {
+            type: String,
+          },
+          status: {
+              type: Boolean,
+              value: false,
+              observer: 'obs_writeButton'
+          },
+          writeClass: {
+              type: String,
+              value: 'write',
+          }
+        };
+      }
+      ready () {
+          super.ready();
+          this.initialise();
+          let userData = JSON.parse(this.userData);
+          const _this = this;
+          
+          this.$.sendButton.addEventListener('touchstart', function() {
+              let textData = _this.$.formArea[0].value;
+              let JSON_DATA = JSON.stringify({user_id:userData.id, text:textData, img_url:userData.imgUrl, user_name:userData.name});
+              _this.$.formArea[0].value = "";
+              _this.poly_textData = JSON_DATA;
+              _this.$.xxx.generateRequest();
+              _this.poly_textData = "";
+              _this.toggleDisplay(_this.$.formArea);
+              _this.writeClass = 'write';
+          })
+
+          this.$.write.addEventListener('touchstart', function() {
+              if (_this.poly_clickFrag === 0) {
+                    _this.toggleDisplay(_this.$.formArea);
+                    _this.writeClass = 'write is-close'
+                    setTimeout(function(){_this.$.formArea.style.opacity = "1";}, 0);
+              } else if (_this.poly_clickFrag === 1) {
+                    _this.$.formArea.style.opacity = "0";
+                    _this.toggleDisplay(_this.$.formArea);
+                    _this.writeClass = 'write'
+              }
+          })
+
+          // setInterval(function(){_this.$.xxx.generateRequest()} , 5000);
+      }
+
+
+      toggleDisplay (dom) {
+          if (dom.style.display !== "none") {
+              dom.style.display = "none";
+              this.poly_clickFrag = 0;
+          } else {
+              dom.style.display = "block";
+              this.poly_clickFrag = 1;
+          }
+      }
+
+      initialise () {
+        this.poly_startFlag = 0;
+        this.poly_i = 0;
+        this.poly_clickFrag = 0;
+        this.$.xxx.generateRequest();
+        const evtSource = new EventSource("http://localhost:8000/messe/observe/log");
+        evtSource.onmessage = function(e) {
+            console.log(e.data);
+        }
+      }
+        
+      statusResponse (e) {
+          const responseData = e.detail.xhr.response;
+          const userData = JSON.parse(this.userData);
+          const defaultThumbnail = 'http://localhost:8000/images/ico-thumbnail.png';
+          const thumbnail = localStorage.getItem('thumbnail') || defaultThumbnail; 
+          let textLogItem = "";
+          for (this.poly_i; this.poly_i < responseData.length; this.poly_i++ ) {
+              if (userData.id === responseData[this.poly_i].user_id) {
+                textLogItem = `<log-item class="self">
+                               <span slot="thumbnail"><img src=${thumbnail} width="100%" height="auto"></span>
+                               <span slot="chatText">${responseData[this.poly_i].text}</span>
+                               <span slot="userName" class="useName">${responseData[this.poly_i].user_name}</span>
+                               <span slot="datetime" class="datetime">${responseData[this.poly_i].time}</span>
+                               </log-item>`;
+
+              } else {
+                textLogItem = `<log-item>' +
+                               <span slot="thumbnail"><img src=${defaultThumbnail} width="100%" height="auto"></span>
+                               <span slot="chatText">${responseData[this.poly_i].text}</span>
+                               <span slot="userName" class="useName">${responseData[this.poly_i].user_name}</span>
+                               <span slot="datetime" class="datetime">${responseData[this.poly_i].time}</span>
+                               </log-item>`;
+
+              }
+              const textLogList = this.$.logList;
+              textLogList.insertAdjacentHTML("afterbegin", textLogItem);
+              //textLogList.appendChild(textLogItem);
+          }
+          if (responseData.length === 0) { 
+              this.$.logList.innerHTML = "";
+              this.poly_i = 0;
+          }
+          if (this.poly_startFlag === 1) {
+
+          } else {
+              this.poly_startFlag = 1;
+          }
+      }
+
+      obs_writeButton (status) {
+          if (status === true) {
+            this.$.write.style.zIndex = '0'
+          } else {
+            this.$.write.style.zIndex = '600'
+          }
+
+      }
+    }
+
+    window.customElements.define(ChatBoard.is, ChatBoard);
+  </script>
+</dom-module>
