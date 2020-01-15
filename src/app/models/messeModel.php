@@ -31,7 +31,7 @@ class MesseModel {
     /**
      * @param $params
      */
-    public function ajaxLog($params) {
+    public function ajaxLog($params = null) {
         $get_query = 'SELECT * FROM chat_logs';
         $delete_query = 'DELETE FROM chat_logs';
         $insert_query = <<<EOL
@@ -61,5 +61,12 @@ EOL;
         //json化
         $dbData_json = json_encode($dbData_array, JSON_UNESCAPED_SLASHES);
         return $dbData_json;
+    }
+    public function countLog() {
+        // memo: https://oracle.tf17.net/plsql/?p=258
+        $query = 'SELECT COUNT(*) FROM chat_logs';
+        $result = $this->db->query($query);
+        $count = $result->fetch(PDO::FETCH_NUM)[0];
+        return $count;
     }
 }
