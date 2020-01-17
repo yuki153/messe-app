@@ -28,6 +28,7 @@ class MesseModel {
             exit;
         }
     }
+
     /**
      * @param $params
      */
@@ -46,7 +47,6 @@ class MesseModel {
                     '{$params['date']}'
                 )
 EOL;
-
         // -- debug --
         // $this->db->query($delete_query);
 
@@ -54,14 +54,13 @@ EOL;
     
         // SQLステートメントを実行し、結果を変数に格納
         $dbData = $this->db->query($get_query);
-    
         //Array化
         $dbData_array = $dbData->fetchAll();
-    
         //json化
         $dbData_json = json_encode($dbData_array, JSON_UNESCAPED_SLASHES);
         return $dbData_json;
     }
+
     public function countLog() {
         // memo: https://oracle.tf17.net/plsql/?p=258
         $query = 'SELECT COUNT(*) FROM chat_logs';
