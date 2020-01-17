@@ -1,4 +1,3 @@
-<!-- <link rel="import" href="../../bower_components/polymer/polymer-element.html"> -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 
 <dom-module id="menu-box">
@@ -41,6 +40,13 @@
                 overflow: hidden;
             }
 
+            .menuList a {
+                display: block;
+                height: 100%;
+                color: #fff;
+                text-decoration: none;
+            }
+
             label {
                 width: 100%;
                 height: 100%;
@@ -61,7 +67,7 @@
         </style>
         <p class="title">MENU</p>
         <ul class="menu" id="menu">
-            <li class="menuList js-touchAciton">ログアウトする</li>
+            <li class="menuList js-touchAciton"><a href="/messe/logout">ログアウトする</a></li>
         </ul>
     </template>
 

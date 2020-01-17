@@ -261,8 +261,8 @@
                                </log-item>`;
 
               } else {
-                textLogItem = `<log-item>' +
-                               <span slot="thumbnail"><img src=${defaultThumbnail} width="100%" height="auto"></span>
+                textLogItem = `<log-item>
+                               <span slot="thumbnail" class="thumbnail"><img src=${defaultThumbnail} width="100%" height="auto"></span>
                                <span slot="chatText">${responseData[this.poly_i].text}</span>
                                <span slot="userName" class="useName">${responseData[this.poly_i].user_name}</span>
                                <span slot="datetime" class="datetime">${responseData[this.poly_i].time}</span>
