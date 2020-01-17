@@ -16,7 +16,7 @@ class MesseController {
     protected $callback_url;
     protected $auth_url;
     protected $token_url;
-    protected $new_token_url;
+    protected $exchange_token_url;
     protected $info_url;
     protected $container;
 
@@ -29,7 +29,7 @@ class MesseController {
         $this->callback_url = $messe['CALLBACK_URL'];
         $this->auth_url = $messe['AUTH_URL'];
         $this->token_url = $messe['TOKEN_URL'];
-        $this->new_token_url = $messe['NEW_TOKEN_URL'];
+        $this->exchange_token_url = $messe['EXCHANGE_TOKEN_URL'];
         $this->info_url = $messe['INFO_URL'];
     }
 
@@ -87,7 +87,7 @@ class MesseController {
                 );
                 
                 // Invalid refrash_token: return code 400($token = false)
-                $token = $googleAuth->getToken($params, $this->new_token_url);
+                $token = $googleAuth->getToken($params, $this->exchange_token_url);
 
                 if ($token) {
                     $access_token = $token['access_token'];
