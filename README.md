@@ -46,6 +46,12 @@ yarn
 docker-compose up -d
 ```
 
+### 終了
+
+```bash
+docker-compose down
+```
+
 ### アプリケーションビルド
 
 ビルド前に src/app/views/messe/app.php に下記の変更を加える
@@ -75,4 +81,26 @@ polymer build
     ...
 ]
 ...
+```
+
+### DB（MySQL）の確認
+
+#### MySQL サーバーへのログイン
+
+```bash
+# mysql コンテナへ入る
+docker-compose exec mysql bin/bash
+# mysql サーバーへ root ユーザーでログイン
+# password: root
+mysql -u root -p
+
+```
+
+#### SQL例
+
+```sql
+-- DB の charset 設定確認
+SHOW VARIABLES LIKE 'char%';
+-- messe_db の chat_logs カラムのデータ確認
+SELECT * FROM messe_db.chat_logs;
 ```
