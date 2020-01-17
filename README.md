@@ -6,6 +6,39 @@ Server lang：php7.2
 Server Framework: Slim3  
 Front App: Polrymer 2.0
 
+## ディレクトリ構造
+
+```bash
+.
+├── README.md
+├── db
+│   ├── data # Auto create by docker
+│   ├── my.cnf
+│   └── sql
+│       └── init.sql
+├── docker-compose.yml
+├── php7.2
+│   ├── dockerfile
+│   └── php.ini
+├── phpmyadmin # Auto create by docker
+└── src
+    ├── app
+    │   ├── controllers
+    │   ├── models
+    │   └── views/messe # messe frontend modules
+    ├── composer.json
+    ├── composer.lock
+    ├── conf
+    │   └── settings.php # messe server side define
+    ├── images # messe frontend images
+    ├── logs
+    │   └── app.log
+    ├── public
+    │   ├── index.php # routing
+    │   └── .htacsess # mapping url
+    └── vendor # Auto create by composer
+```
+
 ## 開発環境の仕様について
 
 ### 準備
