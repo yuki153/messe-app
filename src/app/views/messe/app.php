@@ -6,14 +6,13 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>messe</title>
-    <meta name="description" content="messe description">
+    <meta name="description" content="双方向にリアルタイムでコミュニケーション（チャット）ができるWebサービスです">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="apple-touch-icon" href="../images/apple-messe-ico-180x180.png">
+    <link rel="shortcut icon" href="../images/messe-ico-192x192.png">
 
     <!-- polymer serve base url -->
     <base href="./messe/">
-
-    <!-- See https://goo.gl/OOhYW5 -->
-    <link rel="manifest" href="manifest.json">
-
     
     <!-- <script>
     // Force all polyfills on
