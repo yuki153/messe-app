@@ -39,6 +39,19 @@ class MesseController {
         $renderer = new PhpRenderer('../app/views/messe');
         $googleAuth = new GoogleAuthModel();
 
+        // GUEST ユーザー処理
+        if ($_GET['guest'] && !isset($_SESSION['guest_user'])) {
+            $user_info = '{"id": "'.  uniqid() .'","name": "GUEST USER","given_name": "GUEST","family_name": "", "picture": "", "locale": "ja"}';
+            $_SESSION['guest_user'] = $user_info;
+            return $renderer->render($response, "app.php", ['googleUserData' => $user_info]);
+        } else if (
+            isset($_SESSION['guest_user']) &&
+            !isset($_SESSION['user']) &&
+            !isset($_GET['code'])
+        ) {
+            return $renderer->render($response, "app.php", ['googleUserData' => $_SESSION['guest_user']]);
+        }
+
         // 特定のuser_idが存在していない場合は実行
         if (!isset($_SESSION['user'])) {
             // access token 発行のためのパラメータ生成
@@ -110,16 +123,17 @@ class MesseController {
 
             // Invalid acsess_token: return code 401($user_info = false)
             $user_info = $googleAuth->getUserInfo($params, $this->info_url, false);
-            if ($user_info === false) {
-                // ▼ dummy data: not network
-                $user_info = '{"id": "1125574565545","name": "テスト太郎","given_name": "太郎","family_name": "テスト","picture": "hoge.jpg","locale": "ja"}';
-            }
         }
         return $renderer->render($response, "app.php", ['googleUserData' => $user_info]);
     }
 
     public function login(Request $request, Response $response) {
         $renderer = new PhpRenderer('../app/views/messe');
+        // ゲストユーザー処理
+        if (isset($_SESSION['guest_user'])) {
+            return $response->withRedirect('/messe');
+        }
+        // Google ログインユーザ処理
         if (!isset($_SESSION['user'])) {
             $params = array(
                 'client_id' => $this->consumer_key,
@@ -142,6 +156,11 @@ class MesseController {
     }
 
     public function logout(Request $request, Response $response) {
+        // ゲストユーザー処理：Google ログインユーザーが以前ゲストでログインした情報を持っている場合を考慮
+        if (isset($_SESSION['guest_user']) && !isset($_SESSION['user'])) {
+            $_SESSION['guest_user'] = null;
+            return $response->withRedirect('/messe/login');
+        }
         $user = json_decode($_SESSION['user'], true);
         $googleAuth = new GoogleAuthModel();
         $res = $googleAuth->logout($user['a_token']);
@@ -172,7 +191,7 @@ class MesseController {
         $messe_model = new MesseModel($this->container);
         $count = $messe_model->countLog();
         while(true) {
-            sleep(3);
+            sleep(2);
             $updated_count = $messe_model->countLog();
             if ($count < $updated_count) {
                 $json = $messe_model->ajaxLog();

@@ -10,7 +10,9 @@
             margin: 0;
             padding: 0;
         }
-
+        html {
+            font-family: apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
 
         .login {
             display: flex;
@@ -29,7 +31,6 @@
             height: 50px;
             line-height: 50px;
             text-align: center;
-            margin-top: 60px;
             background-color: #fff;
             border-radius: 25px;
             overflow: hidden;
@@ -47,7 +48,23 @@
             color: transparent;
         }
 
+        .login__description {
+            margin-bottom: 50px;
+            color: #fff;
+            width: 288px;
+            text-align: center;
+        }
+
+        .login__caution {
+            margin: 8px auto 20px;
+            color: #fff;
+            width: 288px;
+            text-align: center;
+            font-size: 12px;
+        }
+
         .logo {
+            margin: 64px auto 16px;
         }
 
     </style>
@@ -57,9 +74,20 @@
         <h1 class="logo">
             <img src="../images/messe_logo_wh.svg" width="160" alt="messe">
         </h1>
+        <p class="login__description">
+            双方向にリアルタイムでチャット<br>ができるWebサービスです
+        </p>
         <div class=login__button>
             <a class="login__link" href="<?php echo $slim['link'] ?>">
                 Google でログイン
+            </a>
+        </div>
+        <p class="login__caution">
+            ※ チャットを投稿するにあたり、Googleアカウントに登録されている名前が公開されます
+        </p>
+        <div class=login__button>
+            <a class="login__link" href="/messe?guest=1">
+                ゲストでログイン
             </a>
         </div>
     </div>
