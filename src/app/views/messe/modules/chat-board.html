@@ -153,7 +153,7 @@
             </div>
         </div>
 
-        <iron-ajax id="xxx"
+        <iron-ajax id="ajax"
             content-type="application/json"
             body=[[poly_textData]]
             url="/messe/ajax/log"
@@ -192,8 +192,8 @@
             }
             ready() {
                 super.ready();
-                this.initialise();
                 let userData = JSON.parse(this.userData);
+                this.initialise();
                 const _this = this;
 
                 this.$.sendButton.addEventListener('touchstart', function () {
@@ -201,11 +201,11 @@
                     let JSON_DATA = JSON.stringify({ user_id: userData.id, text: textData, img_url: userData.imgUrl, user_name: userData.name });
                     _this.$.formArea[0].value = "";
                     _this.poly_textData = JSON_DATA;
-                    _this.$.xxx.generateRequest();
+                    _this.$.ajax.generateRequest();
                     _this.poly_textData = "";
                     _this.toggleDisplay(_this.$.formArea);
                     _this.writeClass = 'write';
-                })
+                }, {passive: true})
 
                 this.$.write.addEventListener('touchstart', function () {
                     if (_this.poly_clickFrag === 0) {
@@ -217,7 +217,7 @@
                         _this.toggleDisplay(_this.$.formArea);
                         _this.writeClass = 'write'
                     }
-                })
+                }, {passive: true})
             }
 
 
@@ -235,11 +235,12 @@
                 this.poly_startFlag = 0;
                 this.poly_i = 0;
                 this.poly_clickFrag = 0;
-                this.$.xxx.generateRequest();
-                const evtSource = new EventSource("/messe/observe/log");
+                this.$.ajax.generateRequest();
+                let userData = JSON.parse(this.userData);
+                const evtSource = new EventSource(`/messe/observe/log?id=${userData.id}`);
                 evtSource.onmessage = (e) => {
                     console.log('server sent events');
-                    this.$.xxx.generateRequest();
+                    this.$.ajax.generateRequest();
                 }
             }
 

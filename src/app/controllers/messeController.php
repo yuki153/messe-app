@@ -176,6 +176,7 @@ class MesseController {
 
         // テキストが1文字以上かつ post データが null でない場合
         if ($params !== null && mb_strlen($params["text"], "utf-8") >= 1) {
+            htmlspecialchars( $key, ENT_QUOTES, 'UTF-8' );
             $params['date'] = $date;
         } else {
             $params = null;
@@ -187,12 +188,16 @@ class MesseController {
     public function observeLog (Request $request, Response $response) {
         header("Content-Type: text/event-stream");
         header("Cache-Control: no-cache");
-        session_write_close();
+        // ▼ Must return "response->withHeader()" due to sending text/html type
+        // $response->withHeader('Content-Type', 'text/event-stream');
+        // $response->withHeader('Cache-Control', 'no-cache');
+        $id = $_GET['id'];
         $messe_model = new MesseModel($this->container);
-        $count = $messe_model->countLog();
-        while(true) {
+        $count = $messe_model->countLog($id);
+        session_write_close();
+        for ($i = 0; $i < 45; $i++) {
             sleep(2);
-            $updated_count = $messe_model->countLog();
+            $updated_count = $messe_model->countLog($id);
             if ($count < $updated_count) {
                 $json = $messe_model->ajaxLog();
                 $count = $updated_count;
@@ -201,5 +206,7 @@ class MesseController {
                 flush();
             }
         }
+        // SOLUTION: EventSource's response has a MIME type ("text/html") that is not
+        return $response->withHeader('Content-Type', 'text/event-stream')->withHeader('Cache-Control', 'no-cache');
     }
 }

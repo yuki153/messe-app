@@ -17,8 +17,6 @@ class MesseModel {
         $PASS = $messe['DB_PASSWORD'];
         try {
             $this->db = new PDO($HOST . $DB_NAME . $CHARSET, $USER_NAME, $PASS);
-            // 日本語文字化け（???表示）対策
-            $this->db->query("set names utf8");
             //エラーをスロー
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             //fetch 設定
@@ -61,9 +59,9 @@ EOL;
         return $dbData_json;
     }
 
-    public function countLog() {
+    public function countLog($id) {
         // memo: https://oracle.tf17.net/plsql/?p=258
-        $query = 'SELECT COUNT(*) FROM chat_logs';
+        $query = 'SELECT COUNT(*) FROM chat_logs WHERE user_id not in ("' . $id . '")';
         $result = $this->db->query($query);
         $count = $result->fetch(PDO::FETCH_NUM)[0];
         return $count;
