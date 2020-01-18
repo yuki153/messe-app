@@ -11,11 +11,4 @@ CREATE TABLE IF NOT EXISTS messe_db.chat_logs (
     text varchar(200),
     img_url varchar(60),
     time datetime
-);
-CREATE TABLE IF NOT EXISTS messe_db.users (
-    user_id varchar(50),
-    a_token varchar(255),
-    r_token varchar(255),
-    limit_time datetime,
-    user_img varchar(60)
-);
+) DEFAULT CHARACTER SET utf8mb4;
