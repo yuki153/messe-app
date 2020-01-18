@@ -146,7 +146,7 @@
                 </button>
             </form>
             <div id="write" class$="[[writeClass]]">
-                <img src="http://localhost:8000/images/ico_Message_min_3x.png"
+                <img src="../images/ico_Message_min_3x.png"
                     alt="メッセージ追加"
                     width="32"
                     height="auto">
@@ -156,7 +156,7 @@
         <iron-ajax id="xxx"
             content-type="application/json"
             body=[[poly_textData]]
-            url="http://localhost:8000/messe/ajax/log"
+            url="/messe/ajax/log"
             method="POST"
             handle-as="json"
             on-response="statusResponse">
@@ -236,9 +236,9 @@
                 this.poly_i = 0;
                 this.poly_clickFrag = 0;
                 this.$.xxx.generateRequest();
-                const evtSource = new EventSource("http://localhost:8000/messe/observe/log");
+                const evtSource = new EventSource("/messe/observe/log");
                 evtSource.onmessage = (e) => {
-                    console.log(e.data);
+                    console.log('server sent events');
                     this.$.xxx.generateRequest();
                 }
             }
@@ -246,7 +246,7 @@
             statusResponse(e) {
                 const responseData = e.detail.xhr.response;
                 const userData = JSON.parse(this.userData);
-                const defaultThumbnail = 'http://localhost:8000/images/ico_user_thumbnail.png';
+                const defaultThumbnail = '../images/ico_user_thumbnail.png';
                 let textLogItem = "";
                 for (this.poly_i; this.poly_i < responseData.length; this.poly_i++) {
                     if (userData.id === responseData[this.poly_i].user_id) {

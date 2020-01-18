@@ -50,13 +50,15 @@
                 height: 100vh;
                 padding-top: 70px;
                 background-color: rgba(0, 0, 0, .8);
+                -webkit-backdrop-filter: blur(5px);
+                        backdrop-filter: blur(5px);
                 z-index: 10;
             }
         </style>
 
         <header class$=[[headerClass]]>
             <menu-button status={{mediator_menuStatus}}></menu-button>
-            <img src="http://localhost:8000/images/messe_logo_wh.svg"
+            <img src="../images/messe_logo_wh.svg"
                 alt="messe"
                 width="100"
                 height="auto">
