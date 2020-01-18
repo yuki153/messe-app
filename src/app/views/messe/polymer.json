@@ -3,10 +3,24 @@
     "rules": ["polymer-2"]
   },
   "entrypoint": "app.html",
-  "builds": [{
-    "bundle": true,
-    "js": {"compile": true, "minify": true},
-    "css": {"minify": true},
-    "html": {"minify": false}
-  }]
+  "builds": [
+    {
+      "bundle": {
+        "stripComments": true,
+        "inlineCss": true,
+        "sourcemaps": false,
+        "excludes": []
+      },
+      "js": {
+        "compile": true,
+        "minify": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": false
+      }
+    }
+  ]
 }
