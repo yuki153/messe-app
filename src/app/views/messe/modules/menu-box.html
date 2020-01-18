@@ -145,7 +145,7 @@
                 const positionX = positionData.pageX - elementPositionX;
                 const positionY = positionData.pageY - elementPositionY;
                 this.createElement('span', touchElement, positionX, positionY);
-            });
+            }, {passive: true});
         }
 
         createElement(tagName, parent, positionX, positionY) {
