@@ -10,9 +10,6 @@
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link rel="apple-touch-icon" href="../images/apple-messe-ico-180x180.png">
     <link rel="shortcut icon" href="../images/messe-ico-192x192.png">
-
-    <!-- polymer serve base url -->
-    <base href="./messe/">
     
     <!-- <script>
     // Force all polyfills on
@@ -42,5 +39,4 @@
 <body>
     <messe-app user-data='<?php echo $googleUserData; ?>'></messe-app>
 </body>
-<!--index配下ではデータのやりとりができない-->
 </html>

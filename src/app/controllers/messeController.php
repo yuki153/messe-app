@@ -133,7 +133,7 @@ class MesseController {
         $renderer = new PhpRenderer('../app/views/messe');
         // ゲストユーザー処理
         if (isset($_SESSION['guest_user'])) {
-            return $response->withRedirect('/messe');
+            return $response->withRedirect('/messe/');
         }
         // Google ログインユーザ処理
         if (!isset($_SESSION['user'])) {
@@ -147,7 +147,7 @@ class MesseController {
             );
             $link = $this->auth_url . '?' . http_build_query($params);
         } else {
-            return $response->withRedirect('/messe');
+            return $response->withRedirect('/messe/');
         }
         $viewData = [
             'slim' => [

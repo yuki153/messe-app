@@ -14,7 +14,7 @@ return [
     'messe' => [
         'CONSUMER_KEY' => 'xxxxxxxxxxxxxxxxxxx',
         'CONSUMER_SECRET' => 'xxxxxxxxxxxxxxxxxxxx',
-        'CALLBACK_URL' => 'http://localhost:8000/messe',
+        'CALLBACK_URL' => 'http://localhost:8000/messe/',
         'AUTH_URL' => 'https://accounts.google.com/o/oauth2/auth',
         'TOKEN_URL' => 'https://accounts.google.com/o/oauth2/token',
         'EXCHANGE_TOKEN_URL' => 'https://www.googleapis.com/oauth2/v4/token',

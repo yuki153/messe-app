@@ -11,6 +11,9 @@
    # memo: "messe/modules/(.*)$" = $1（置換対象部分(.*)$）
    RewriteRule messe/(.*)$ app/views/messe/$1 [QSA,L]
 
+   RewriteCond %{REQUEST_URI} ^/messe$
+   RewriteRule (.*) $1/ [R=301,L]
+
    RewriteCond %{REQUEST_FILENAME} !-f
    # RewriteCond %{REQUEST_FILENAME} !-d
    RewriteRule ^ public/index.php [QSA,L]

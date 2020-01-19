@@ -90,7 +90,7 @@
             ※ チャットを投稿するにあたり、Googleアカウントに登録されている名前が公開されます
         </p>
         <div class=login__button>
-            <a class="login__link" href="/messe?guest=1">
+            <a class="login__link" href="/messe/?guest=1">
                 ゲストでログイン
             </a>
         </div>
