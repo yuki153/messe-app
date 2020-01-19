@@ -105,37 +105,7 @@
             for (var i = 0; i < touchElement.length; i++) {
                 this.touchAction(touchElement[i]);
             }
-            // touchElement[0].addEventListener('click', () => {
-            //     setTimeout(()=> {
-            //         const input = document.createElement('input');
-            //         input.type = 'file';
-            //         input.accept = 'image/*';
-            //         input.addEventListener('change', this.loadLocalImage.bind(this), false)
-            //         input.click();
-            //     }, 300);
-            // });
         }
-
-        // loadLocalImage(e) {
-        //     // ファイル情報を取得
-        //     var fileData = e.target.files[0];
-        //     console.log(fileData); // 取得した内容の確認用
-    
-        //     // 画像ファイル以外は処理を止める
-        //     if(!fileData.type.match('image.*')) {
-        //         console.log('画像を選択してください');
-        //         return;
-        //     }
-    
-        //     // FileReaderオブジェクトを使ってファイル読み込み
-        //     var reader = new FileReader();
-        //     // ファイル読み込みに成功したときの処理
-        //     reader.onload = () => {
-        //         localStorage.setItem('thumbnail', reader.result);
-        //     }
-        //     // ファイル読み込みを実行
-        //     reader.readAsDataURL(fileData);
-        // }
 
         touchAction(touchElement) {
             touchElement.addEventListener('touchstart', (e) => {
