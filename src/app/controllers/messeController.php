@@ -21,7 +21,7 @@ class MesseController {
     protected $container;
 
     public function __construct(ContainerInterface $container) {
-        session_start();
+        session_start(['cookie_lifetime' => 60 * 60 * 24 * 30]);
         $messe = $container['messe'];
         $this->container = $container;
         $this->consumer_key = $messe['CONSUMER_KEY'];
@@ -34,13 +34,13 @@ class MesseController {
     }
 
     public function index(Request $request, Response $response) {
-        // session_id ハイジャック対策
-        session_regenerate_id(true);
         $renderer = new PhpRenderer('../app/views/messe');
         $googleAuth = new GoogleAuthModel();
 
         // GUEST ユーザー処理
         if ($_GET['guest'] && !isset($_SESSION['guest_user'])) {
+            // session_id ハイジャック対策
+            session_regenerate_id(true);
             $user_info = '{"id": "'.  uniqid() .'","name": "GUEST USER","given_name": "GUEST","family_name": "", "picture": "", "locale": "ja"}';
             $_SESSION['guest_user'] = $user_info;
             return $renderer->render($response, "app.php", ['googleUserData' => $user_info]);
@@ -54,6 +54,8 @@ class MesseController {
 
         // 特定のuser_idが存在していない場合は実行
         if (!isset($_SESSION['user'])) {
+            // session_id ハイジャック対策
+            session_regenerate_id(true);
             // access token 発行のためのパラメータ生成
             $params = array(
                 'code' => $_GET['code'],
