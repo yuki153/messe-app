@@ -206,6 +206,12 @@ class MesseController {
                 echo "data:" . $json . "\n\n";
                 ob_end_flush();
                 flush();
+                /**
+                 * メモ:(break)
+                 * レンタルサーバでは nginx の設定変更ができず、SSE が正しい挙動をしない
+                 * return するまで client にデータを送信しない為 break を行う
+                 */
+                // break;
             }
         }
         // SOLUTION: EventSource's response has a MIME type ("text/html") that is not
