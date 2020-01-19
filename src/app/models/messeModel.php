@@ -10,7 +10,7 @@ class MesseModel {
 
     public function __construct(ContainerInterface $container) {
         $messe = $container['messe'];
-        $HOST = 'mysql:host=mysql;';
+        $HOST = 'mysql:host=' . $messe['DB_HOST'] . ';';
         $DB_NAME = 'dbname=' . $messe['DB_DATABASE'] . ';';
         $CHARSET = 'charset=utf8mb4';
         $USER_NAME = $messe['DB_USERNAME'];

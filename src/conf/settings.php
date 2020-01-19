@@ -21,6 +21,7 @@ return [
         'INFO_URL' => 'https://www.googleapis.com/oauth2/v1/userinfo',
         'DB_DATABASE' => 'messe_db',
         'DB_USERNAME' => 'root',
-        'DB_PASSWORD' => 'root'
+        'DB_PASSWORD' => 'root',
+        'DB_HOST' => 'mysql'
     ]
 ];
