@@ -49,8 +49,8 @@ class GoogleAuthModel {
      * @param string $token: acsess_token
      */
     public function logout($token) {
-        $ch = curl_init('https://oauth2.googleapis.com/revoke?token=' . $token);
-        curl_setopt($ch,CURLOPT_POST, TRUE);
+        $ch = curl_init('https://accounts.google.com/o/oauth2/revoke?token=' . $token);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_exec($ch);
         $res = true;
