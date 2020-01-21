@@ -43,13 +43,14 @@ class MesseController {
             session_regenerate_id(true);
             $user_info = '{"id": "'.  uniqid() .'","name": "GUEST USER","given_name": "GUEST","family_name": "", "picture": "", "locale": "ja"}';
             $_SESSION['guest_user'] = $user_info;
-            return $renderer->render($response, "app.php", ['googleUserData' => $user_info]);
+            // " => &quot; へ変換
+            return $renderer->render($response, "app.php", ['googleUserData' => htmlspecialchars($user_info)]);
         } else if (
             isset($_SESSION['guest_user']) &&
             !isset($_SESSION['user']) &&
             !isset($_GET['code'])
         ) {
-            return $renderer->render($response, "app.php", ['googleUserData' => $_SESSION['guest_user']]);
+            return $renderer->render($response, "app.php", ['googleUserData' => htmlspecialchars($_SESSION['guest_user'])]);
         }
 
         // 特定のuser_idが存在していない場合は実行
@@ -126,7 +127,7 @@ class MesseController {
             // Invalid acsess_token: return code 401($user_info = false)
             $user_info = $googleAuth->getUserInfo($params, $this->info_url, false);
         }
-        return $renderer->render($response, "app.php", ['googleUserData' => $user_info]);
+        return $renderer->render($response, "app.php", ['googleUserData' => htmlspecialchars($user_info)]);
     }
 
     public function login(Request $request, Response $response) {
