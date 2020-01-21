@@ -3,8 +3,8 @@
 ## 使用技術
 
 Server lang：php7.2  
-Server Framework: Slim3  
-Front App: Polrymer 2.0
+Server Framework: [Slim 3](https://www.slimframework.com/)  
+Front App: [Polrymer 2.0](https://docs.polymer-jp.org/2.0/docs/devguide/feature-overview)
 
 ## ディレクトリ構造
 
@@ -34,9 +34,9 @@ Front App: Polrymer 2.0
     ├── logs
     │   └── app.log
     ├── public
-    │   ├── index.php # routing
-    │   └── .htacsess # mapping url
-    └── vendor # Auto create by composer
+    │   └── index.php # routing
+    ├── vendor # Auto create by composer
+    └── .htacsess # mapping url
 ```
 
 ## 開発環境の仕様について
@@ -52,8 +52,10 @@ Front App: Polrymer 2.0
 
 ### 起動
 
-下記のコマンドを打ち、http://localhost:8000/messe/login へアクセス  
-※ link タグの import 機能を polymer2.0 では用いる為、Chrome で確認する
+後述のコマンドを打ち、http://localhost:8000/messe/login へアクセス  
+
+* PCブラウザで確認の際は devTool で touch イベントをシュミレートできる chrome で行う
+* chrome80 (2020/2 release) から link rel="import" 機能が削除されるので、chrome80 以降では動作要確認
 
 #### プロジェクト clone 後の初回の起動コマンド
 
@@ -85,24 +87,20 @@ docker-compose up -d
 docker-compose down
 ```
 
-### アプリケーションビルド
+### 補足
 
-ビルド前に src/app/views/messe/app.php に下記の変更を加える
-その後ビルドコマンドを打つ
-
-* app.php の拡張子を html に変更
-* base タグをコメントアウト
-* php コードの削除
+./src/app/views/messe/app.php の拡張子を html に変更し、下記コマンドを実行する事で polymer の開発環境を個別に立てることができるが、controller から値を渡したりすることはできないので、基本使用しない。
 
 ```bash
-# Build setting by polymer.json
-polymer build
+cd src/app/views/messe/
+yarn polymer serve
 ```
 
 ## 開発について
 
 ### Google ログイン
 
+[Google OAuth 2.0 認証を使ったログインの実装](https://qiita.com/kite_999/items/bddd62c395f260e745bc) 等を参考に設定を行った後、  
 ./src/conf/settings.php の `CONSUMER_KEY`, `CONSUMER_SECRET` に任意の値を設定する
 
 ```php
@@ -136,4 +134,70 @@ mysql -u root -p
 SHOW VARIABLES LIKE 'char%';
 -- messe_db の chat_logs カラムのデータ確認
 SELECT * FROM messe_db.chat_logs;
+```
+
+## 実環境への反映について
+
+### ① アプリケーションビルド
+
+./src/app/views/messe/app.php をコピーして同じ階層に app.html を作成。  
+その後下記コマンドによりビルドを行う。
+
+```bash
+# Build setting by polymer.json
+polymer build
+```
+
+### ② 動作確認
+
+① のアプリケーションビルドにより、build/ ディレクトリが作成される。  
+build/default/ の中にある app.html（ビルド後ファイル）の拡張子を .php に変更した後、
+./src/app/views/messe/app.php と置き換え、http://localhost:8000/messe/ で動作確認を行う。  
+※ 置き換えの際、app.php（ビルド前ファイル） は _app.php 等に名前変更して退避させておく
+
+### ③ 設定ファイルの書き換え
+
+実際の環境用に ./src/conf/settings.php の下記部分を書き換える
+
+```php
+...
+'messe' => [
+    ...
+    'CALLBACK_URL' => 'https://localhost:8000/messe/',
+    ...
+    'DB_DATABASE' => 'messe_db',
+    'DB_USERNAME' => 'root',
+    'DB_PASSWORD' => 'root',
+    'DB_HOST' => 'mysql'
+]
+...
+```
+
+### ④ 反映
+
+.src/ 配下の下記ディレクトリ及びファイルを任意のサーバーに反映する。
+
+```bash
+.
+├── app
+│   ├── controllers
+│   │   └── *
+│   ├── models
+│   │   └── *
+│   └── views/messe
+│       ├── bower_components # build/default/bower_components
+│       │   └── *
+│       ├── app.php # build/default/app.html（拡張子を php へ変更）
+│       └── login.php
+├── conf
+│   └── settings.php
+├── images
+│   └── *
+├── logs
+│   └── app.log
+├── public
+│   └── index.php
+├── vendor
+│   └── *
+└── .htacsess
 ```
