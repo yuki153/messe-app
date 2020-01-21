@@ -93,7 +93,7 @@ class MesseController {
             $registration_date = strtotime($user['limit']); 
             $today = strtotime(date('Y-m-d H:i:s'));
 
-            if ($today - $Registration_date >= 3600) {
+            if ($today - $registration_date >= 3600) {
                 $refresh_token = $user['r_token'];
                 $params = array(
                     'grant_type' => 'refresh_token',
