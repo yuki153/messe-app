@@ -18,7 +18,7 @@
     ShadyCSS = { shimcssproperties: true};
     </script> -->
 
-    <script src="https://cdn.rawgit.com/webcomponents/webcomponentsjs/cf46d7a0/webcomponents-loader.js"></script>
+    <script src="./bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
     <link rel="import" href="./modules/messe-app.html">
 
