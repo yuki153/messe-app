@@ -53,9 +53,7 @@ Front App: [Polrymer 2.0](https://docs.polymer-jp.org/2.0/docs/devguide/feature-
 ### 起動
 
 後述のコマンドを打ち、http://localhost:8000/messe/login へアクセス  
-
-* PCブラウザで確認の際は devTool で touch イベントをシュミレートできる chrome で行う
-* chrome80 (2020/2 release) から link rel="import" 機能が削除されるので、chrome80 以降では動作要確認
+※ PCブラウザで確認の際は devTool で touch イベントをシュミレートできる chrome で行う
 
 #### プロジェクト clone 後の初回の起動コマンド
 
