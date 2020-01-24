@@ -53,7 +53,8 @@ Front App: [Polrymer 2.0](https://docs.polymer-jp.org/2.0/docs/devguide/feature-
 ### 起動
 
 後述のコマンドを打ち、http://localhost:8000/messe/login へアクセス  
-※ PCブラウザで確認の際は devTool で touch イベントをシュミレートできる chrome で行う
+※ PCブラウザで確認の際は devTool で touch イベントをシュミレートできる chrome で行う  
+※ 開発時に node version v8.1x.0 で動作確認済み（他未検証）
 
 #### プロジェクト clone 後の初回の起動コマンド
 
